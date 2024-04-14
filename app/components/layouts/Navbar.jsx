@@ -1,17 +1,35 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import Image from "next/image";
 import academix from "../../res/academix.jpg";
 import { usePathname } from "next/navigation";
 
-function Navbar() {
+function Navbar({ user }) {
   const { status, data } = useSession();
-
   const auth = status === "authenticated";
-
   const pathname = usePathname();
+  const [role, setRole] = useState("student");
+
+  function getRole() {
+    fetch("/api/user", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.status === "exist") {
+          setRole(data.user.role);
+        }
+      });
+  }
+
+  useEffect(() => {
+    getRole();
+  }, []);
 
   if (status === "loading") return null;
 
@@ -49,6 +67,15 @@ function Navbar() {
         </Link>
       </div>
       <div className="flex items-center">
+        {role === "teacher" && (
+          <Link
+            href="/create"
+            className="text-white hover:text-gray-900 border hover:bg-transparent hover:border-black transition duration-300 ease-in-out bg-black p-2 rounded-md "
+          >
+            Create Course
+          </Link>
+        )}
+
         {(!auth && (
           <Link
             href="/login"
@@ -58,7 +85,7 @@ function Navbar() {
           </Link>
         )) || (
           <Link
-            href="/dashboard"
+            href="/my-space"
             className="text-white px-5 hover:bg-transparent transition duration-300 ease-in-out "
           >
             <img
