@@ -2,12 +2,30 @@
 import React, { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
+import CaregoriesData from "../lib/Category";
 
 function page() {
   const { data: session, status } = useSession();
   const [loading, setLoading] = useState(true);
   const router = useRouter();
   const [role, setRole] = useState("student");
+  const [category, setCategory] = useState("UI Design");
+  const [description, setDescription] = useState("");
+  const [initialTags, setInitialTags] = useState([]);
+  const [today, setToday] = useState(new Date().toISOString().split("T")[0]);
+  const [userInput, setUserInput] = useState([]);
+  const [image, setImage] = useState(null);
+  const [qrImage, setQrImage] = useState(null);
+  function saveTags() {
+    const catego = CaregoriesData.find((cat) => cat.title === category);
+    setInitialTags(catego?.tags);
+  }
+
+  useEffect(() => {
+    saveTags();
+  }, [category]);
 
   function getRole() {
     fetch("/api/user", {
@@ -98,26 +116,334 @@ function page() {
             <form action="#" className="mt-8 grid grid-cols-6 gap-6">
               <div className="col-span-6 sm:col-span-3">
                 <label
-                  htmlFor="FirstName"
+                  htmlFor="title"
                   className="block text-sm font-medium text-gray-700"
                 >
-                  First Name
+                  Title
                 </label>
+                <input
+                  type="text"
+                  onChange={(e) =>
+                    setUserInput({ ...userInput, title: e.target.value })
+                  }
+                  required
+                  name="title"
+                  id="title"
+                  placeholder="Title for your course"
+                  autoComplete="title"
+                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-600 focus:border-blue-600 sm:text-sm"
+                />
               </div>
 
-              <div className="col-span-6 sm:flex sm:items-center sm:gap-4">
-                <button className="inline-block shrink-0 rounded-md border border-blue-600 bg-blue-600 px-12 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-blue-600 focus:outline-none focus:ring active:text-blue-500">
-                  Create an account
-                </button>
-                <p className="mt-4 text-sm text-gray-500 sm:mt-0">
-                  Already have an account?
-                  <a href="#" className="text-gray-700 underline">
-                    Log in
-                  </a>
-                  .
-                </p>
+              <div className="col-span-6 sm:col-span-3">
+                <label
+                  htmlFor="description"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Short Description
+                </label>
+                <input
+                  type="text"
+                  required
+                  onChange={(e) =>
+                    setUserInput({
+                      ...userInput,
+                      shortDescription: e.target.value,
+                    })
+                  }
+                  name="shortDescription"
+                  id="shortDescription"
+                  placeholder="Short Description for your course"
+                  autoComplete="shortDescription"
+                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-600 focus:border-blue-600 sm:text-sm"
+                />
+              </div>
+              <div className="col-span-6 sm:col-span-3">
+                <label
+                  htmlFor="price"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Price
+                </label>
+                <input
+                  onChange={(e) =>
+                    setUserInput({ ...userInput, price: e.target.value })
+                  }
+                  type="number"
+                  required
+                  name="price"
+                  id="price"
+                  placeholder="Price for your course"
+                  autoComplete="price"
+                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-600 focus:border-blue-600 sm:text-sm"
+                />
+              </div>
+              <div className="col-span-6 sm:col-span-3">
+                <label
+                  htmlFor="category"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Category
+                </label>
+                <select
+                  id="category"
+                  required
+                  name="category"
+                  onChange={(e) => setCategory(e.target.value)}
+                  autoComplete="category"
+                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-600 focus:border-blue-600 sm:text-sm"
+                >
+                  {CaregoriesData.map((category) => (
+                    <option key={category.id} value={category.title}>
+                      {category.title}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="col-span-6 sm:col-span-3">
+                <label
+                  htmlFor="tags"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Tags
+                </label>
+                <select
+                  id="tags"
+                  required
+                  name="tags"
+                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-600 focus:border-blue-600 sm:text-sm"
+                >
+                  {!!initialTags &&
+                    initialTags?.map((tag) => (
+                      <option key={tag} value={tag}>
+                        {tag}
+                      </option>
+                    ))}
+                </select>
+              </div>
+              <div className="col-span-6 sm:col-span-3">
+                <label
+                  htmlFor="meet"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Meet Link
+                </label>
+                <input
+                  type="text"
+                  name="meet"
+                  onChange={(e) =>
+                    setUserInput({ ...userInput, meetLink: e.target.value })
+                  }
+                  id="meet"
+                  placeholder="Meet link for your course"
+                  autoComplete="meet"
+                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-600 focus:border-blue-600 sm:text-sm"
+                />
+              </div>
+              <div className="col-span-6 sm:col-span-3">
+                <label
+                  htmlFor="startDate"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Start Date
+                </label>
+                <input
+                  min={today}
+                  required
+                  onChange={(e) =>
+                    setUserInput({ ...userInput, startDate: e.target.value })
+                  }
+                  type="date"
+                  pattern="\d{4}-\d{2}-\d{2}"
+                  name="startDate"
+                  id="startDate"
+                  placeholder="When does your course start?"
+                  autoComplete="startDate"
+                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-600 focus:border-blue-600 sm:text-sm"
+                />
+              </div>
+              <div className="col-span-6 sm:col-span-3">
+                <label
+                  htmlFor="duration"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Duration (in weeks)
+                </label>
+                <input
+                  type="number"
+                  required
+                  onChange={(e) =>
+                    setUserInput({ ...userInput, duration: e.target.value })
+                  }
+                  name="duration"
+                  id="duration"
+                  placeholder="Duration of your course (in weeks)"
+                  autoComplete="duration"
+                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-600 focus:border-blue-600 sm:text-sm"
+                />
               </div>
             </form>
+            <div className="col-span-1 sm:col-span-3 pt-5 pb-5">
+              <label
+                htmlFor="description"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Long Description
+              </label>
+              <ReactQuill
+                theme="snow"
+                value={description}
+                required
+                onChange={setDescription}
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-600 focus:border-blue-600 sm:text-sm"
+              />
+            </div>
+            <div className="col-span-1 sm:col-span-3 pt-5 pb-5">
+              <label
+                htmlFor="description"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Cover Image
+              </label>
+              {!image && (
+                <div
+                  onClick={() => {
+                    document.getElementById("coverImage").click();
+                  }}
+                  className="flex justify-center mt-3 hover:bg-gray-200 duration-200 cursor-pointer items-center border border-dashed rounded-md h-52 w-full border-black"
+                >
+                  <div className="">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-12 w-12 text-gray-400"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                      />
+                    </svg>
+                    <p className="text-sm text-gray-400">Upload your image</p>
+                    <input
+                      onChange={(e) => {
+                        const file = e.target.files[0];
+                        setImage(file);
+                      }}
+                      type="file"
+                      id="coverImage"
+                      required
+                      className="hidden"
+                      accept="image/,.jpg,.png,.jpeg"
+                    />
+                  </div>
+                </div>
+              )}
+              {image && (
+                <div className="relative flex justify-center mt-3 items-center rounded-md h-52 w-full border-black">
+                  <img
+                    className="h-52 w-full object-cover"
+                    src={URL.createObjectURL(image)}
+                    alt="cover"
+                  />
+                  <div className="flex absolute bottom-2 left-2">
+                    <button
+                      onClick={() => setImage(null)}
+                      className="bg-red-600 text-white px-2 py-1 rounded-md"
+                    >
+                      Remove
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+            <div className="col-span-1 sm:col-span-3 pt-5 pb-5">
+              <label
+                htmlFor="description"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Payment Method
+              </label>
+              <div className="col-span-6 sm:col-span-3">
+                <select
+                  id="payment"
+                  required
+                  name="payment"
+                  onChange={(e) =>
+                    setUserInput({ ...userInput, payment: e.target.value })
+                  }
+                  autoComplete="payment"
+                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-600 focus:border-blue-600 sm:text-sm"
+                >
+                  <option value="esewa">Esewa</option>
+                  <option value="khalti">Khalti</option>
+                  <option value="Bank Account">Bank Account</option>
+                </select>
+              </div>
+              {!qrImage && (
+                <div
+                  onClick={() => {
+                    document.getElementById("paymentQr").click();
+                  }}
+                  className="flex justify-center mt-3 hover:bg-gray-200 duration-200 cursor-pointer items-center border border-dashed rounded-md h-52 w-full border-black"
+                >
+                  <div className="">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-12 w-12 text-gray-400"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                      />
+                    </svg>
+                    <p className="text-sm text-gray-400">Upload your Qr Code</p>
+                    <input
+                      onChange={(e) => {
+                        const file = e.target.files[0];
+                        setQrImage(file);
+                      }}
+                      type="file"
+                      id="paymentQr"
+                      required
+                      className="hidden"
+                      accept="image/,.jpg,.png,.jpeg"
+                    />
+                  </div>
+                </div>
+              )}
+              {qrImage && (
+                <div className="relative flex justify-center mt-3 items-center rounded-md h-52 w-full border-black">
+                  <img
+                    className="h-52 w-52 object-cover rounded-lg"
+                    src={URL.createObjectURL(qrImage)}
+                    alt="cover"
+                  />
+                  <div className="flex absolute bottom-2 left-2">
+                    <button
+                      onClick={() => setQrImage(null)}
+                      className="bg-red-600 text-white px-2 py-1 rounded-md"
+                    >
+                      Remove
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+            <div className="col-span-6 sm:flex sm:items-center sm:gap-4">
+              <button className="inline-block shrink-0 rounded-md border border-blue-600 bg-blue-600 px-12 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-blue-600 focus:outline-none focus:ring active:text-blue-500">
+                Create a Course
+              </button>
+            </div>
           </div>
         </main>
       </div>
