@@ -71,6 +71,19 @@ export async function POST(request) {
       },
       { new: true }
     );
+    const updateStudent = await User.findByIdAndUpdate(
+      user._id,
+      {
+        $push: { enrolledCourses: course },
+      },
+      { new: true }
+    );
+    if (!updateStudent) {
+      return Response.json({
+        status: "error",
+        message: "Failed to enroll",
+      });
+    }
     if (!updateCourse) {
       return Response.json({
         status: "error",
