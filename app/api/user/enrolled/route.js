@@ -17,13 +17,18 @@ export async function GET(request, { params }) {
 
   if (!user) {
     return Response.json({
-      status: "success",
+      status: "error",
       message: "User not found",
     });
   }
+
+  const userEnrolled = await Enroll.find({
+    student: user._id,
+  }).populate("course", "title shortDescription image category tags");
+
   return Response.json({
-    status: "exist",
-    message: "User found",
-    user: user,
+    status: "success",
+    message: " User enrolled courses found",
+    enrolled: userEnrolled,
   });
 }
