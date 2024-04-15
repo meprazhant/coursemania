@@ -178,7 +178,7 @@ function CreatingUser({ session }) {
         <fieldset className="grid grid-cols-4 gap-6 p-6 rounded-md shadow-sm ">
           <div className="space-y-2 col-span-full lg:col-span-1">
             <p className="font-medium">Using</p>
-            <p className="text-xs">How are you using Academix?</p>
+            <p className="text-xs">How are you using Hamro Classroom?</p>
           </div>
           <div className="grid grid-cols-6 gap-4 col-span-full lg:col-span-3">
             <div className="col-span-full ">

@@ -22,11 +22,11 @@ function Landing() {
         />
         <div className="flex absolute top-0 left-0 h-full w-full justify-center items-end flex-col px-10 gap-5 pb-10">
           <div className="flex md:w-1/2 w-full flex-col gap-7">
-            <h1 className="text-6xl josin text-white text-center">
-              Lets grow your education level up with Academix
+            <h1 className="text-[50px] josin text-white text-center">
+              Lets grow your Skills with Hamro Classroom
             </h1>
             <p className="text-white text-lg text-center">
-              Join Academix to learn from the best
+              Join Hamro Classroom to learn from the best
             </p>
             <div className="flex gap-1 justify-center items-center ">
               <div className="flex bg-white p-2 w-96 rounded-md">

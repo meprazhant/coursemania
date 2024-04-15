@@ -13,6 +13,7 @@ import Countdown from "react-countdown";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import EnrollCourse from "./EnrollCourse";
+import { useRouter } from "next/navigation";
 
 const Completionist = () => <span>You are good to go!</span>;
 
@@ -55,6 +56,7 @@ const renderer = ({ days, hours, minutes, seconds, completed }) => {
 function SingleCOursePage({ course }) {
   const [hydrated, setHydrated] = React.useState(false);
   const [showModel, setShowModel] = React.useState(false);
+  const router = useRouter();
 
   const courseData = course.course;
 
@@ -179,12 +181,22 @@ function SingleCOursePage({ course }) {
               </button>
             )}
             {isEnrolled && (
-              <button className="bg-green-500 text-white p-3 hover:bg-transparent border hover:border-green-500 hover:text-green-500 duration-300 rounded-md">
+              <button
+                onClick={() => {
+                  router.push(`/enrolled/${courseData._id}`);
+                }}
+                className="bg-green-500 text-white p-3 hover:bg-transparent border hover:border-green-500 hover:text-green-500 duration-300 rounded-md"
+              >
                 Visit Course
               </button>
             )}
             {isSelf && (
-              <button className="bg-blue-500 text-white p-3 hover:bg-transparent border hover:border-blue-500 hover:text-blue-500 duration-300 rounded-md">
+              <button
+                onClick={() => {
+                  router.push(`/enrolled/${courseData._id}`);
+                }}
+                className="bg-blue-500 text-white p-3 hover:bg-transparent border hover:border-blue-500 hover:text-blue-500 duration-300 rounded-md"
+              >
                 Edit Course
               </button>
             )}

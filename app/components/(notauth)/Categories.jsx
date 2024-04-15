@@ -2,6 +2,7 @@
 import React from "react";
 import CaregoriesData from "@/app/lib/Category";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 function Categories() {
   const router = useRouter();
@@ -21,15 +22,13 @@ function Categories() {
           <div className="flex flex-col gap-2 bg-[#3F6745] text-white p-4 rounded-lg">
             <h1 className="text-lg font-bold">{category.title}</h1>
             {category.tags.map((tag, index) => (
-              <p
-                onClick={() => {
-                  router.push(`/search/${tag}`);
-                }}
+              <Link
+                href={`/search/${tag}`}
                 key={index}
                 className="text-sm text-gray-100 opacity-80 hover:underline hover:opacity-100 cursor-pointer"
               >
                 {tag}
-              </p>
+              </Link>
             ))}
           </div>
         ))}

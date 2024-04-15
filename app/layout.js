@@ -11,7 +11,7 @@ import Navbar from "./components/layouts/Navbar";
 // import "react-toastify/dist/ReactToastify.css";
 
 export const metadata = {
-  title: "Academix | Home",
+  title: "Hamro Classroom | Home",
 };
 
 export default async function RootLayout({ children }) {

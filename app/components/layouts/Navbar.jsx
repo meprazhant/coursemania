@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import Image from "next/image";
-import academix from "../../res/academix.jpg";
+import hamroClass from "../../res/hcr.png";
 import { usePathname } from "next/navigation";
 
 function Navbar({ user }) {
@@ -37,10 +37,10 @@ function Navbar({ user }) {
     <div className="flex py-3 justify-between items-center px-5 bg-[#E4E5DF] shadow-md">
       <div className="flex items-center">
         <Link href="/">
-          <Image src={academix} alt="logo" height={45} />
+          <Image src={hamroClass} alt="logo" height={45} />
         </Link>
       </div>
-      <div className="flex items-center gap-5">
+      <div className=" items-center gap-5 hidden md:flex">
         <Link
           href="/"
           className={` text-gray-600 hover:text-gray-900 transition duration-300 ease-in-out ${
@@ -63,7 +63,7 @@ function Navbar({ user }) {
             pathname === "/teach" ? "text-blue-900" : ""
           } `}
         >
-          Teach on Academix
+          Teach on Hamro Classroom
         </Link>
       </div>
       <div className="flex items-center">

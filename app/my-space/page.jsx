@@ -9,6 +9,8 @@ function page() {
   const { data: session } = useSession();
   const [enrolled, setEnrolled] = React.useState([]);
   const [enrollLoading, setEnrollLoading] = React.useState(true);
+  const [myCourse, setMyCourse] = React.useState([]);
+  const [myCourseLoading, setMyCourseLoading] = React.useState(true);
   const [userLoading, setUserLoading] = React.useState(true);
   const [user, setUser] = React.useState({});
   const router = useRouter();
@@ -45,10 +47,29 @@ function page() {
     setUserLoading(false);
   }
 
+  async function getMyCOurse() {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_URL}/api/user/mycourse`,
+      {
+        cache: "no-cache",
+      }
+    );
+    if (!res.ok) {
+      throw new Error("An error occurred while fetching the data");
+    }
+    const data = await res.json();
+    if (data.status === "error") {
+      return;
+    }
+    setMyCourse(data.courses);
+    setMyCourseLoading(false);
+  }
+
   useEffect(() => {
     if (session) {
       FetchenrolledCourse();
       fetchUser();
+      getMyCOurse();
     }
   }, []);
 
@@ -60,8 +81,10 @@ function page() {
       <MSMain
         enrollLoading={enrollLoading}
         userLoading={userLoading}
+        myCourseLoading={myCourseLoading}
         enrolled={enrolled}
         user={user}
+        myCourse={myCourse}
       />
     </div>
   );

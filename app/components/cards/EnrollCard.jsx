@@ -13,7 +13,7 @@ import Link from "next/link";
 function EnrollCard({ course }) {
   const router = useRouter();
   function navigateToCourse() {
-    return `/courses/${course._id}`;
+    return `/enrolled/${course._id}`;
   }
   return (
     <div className="min-h-[320px] flex flex-col justify-start p-5 rounded-md items-center gap-3 bg-gray-100 ">
