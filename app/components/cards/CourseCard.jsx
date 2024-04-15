@@ -12,6 +12,9 @@ import Link from "next/link";
 
 function CourseCard({ course }) {
   const router = useRouter();
+  function navigateToCourse() {
+    return `/courses/${course._id}`;
+  }
   return (
     <div className="min-h-[320px] flex flex-col justify-start p-5 rounded-md items-center gap-3 bg-gray-100 pb-10">
       <div className="flex w-full">
@@ -24,7 +27,7 @@ function CourseCard({ course }) {
 
       <div className="flex flex-col gap-2 w-full  overflow-hidden">
         <Link
-          href={"/courses/hehehaa"}
+          href={navigateToCourse()}
           className="text-md font-bold josin h-12 text-start hover:underline cursor-pointer"
         >
           {course.title.length > 40
@@ -74,7 +77,7 @@ function CourseCard({ course }) {
           <p className="text-sm">({course.createdBy?.rating}/5)</p>
         </div>
         <Link
-          href={"/courses/hehehaa"}
+          href={navigateToCourse()}
           className="flex h-10 w-10 hover:text-[#3F6745] hover:bg-transparent border text-white cursor-pointer duration-200 hover:border-[#3F6745] items-center justify-center rounded-full bg-[#3F6745]"
         >
           <AiOutlineRight size={22} />
