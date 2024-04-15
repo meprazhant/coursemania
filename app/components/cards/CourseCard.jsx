@@ -50,7 +50,7 @@ function CourseCard({ course }) {
       <div className="flex justify-between w-full">
         <div
           onClick={() => {
-            router.push("/search/uiux");
+            router.push("/search/" + course.category);
           }}
           className="flex whitespace-nowrap rounded-md cursor-pointer bg-red-300 hover:bg-red-200 duration-200 p-2 items-center gap-2 text-xs"
         >

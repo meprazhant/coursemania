@@ -5,9 +5,17 @@ import CourseCard from "../cards/CourseCard";
 
 function Mainpage({ courses }) {
   const [activeCategory, setActiveCategory] = useState("All");
+  const [filteredCourses, setFilteredCourses] = useState(courses);
 
   const handleClick = (category) => {
     setActiveCategory(category);
+    if (category === "All") {
+      setFilteredCourses(courses);
+    } else {
+      setFilteredCourses(
+        courses.filter((course) => course.category === category)
+      );
+    }
   };
 
   return (
@@ -52,11 +60,19 @@ function Mainpage({ courses }) {
           available for you
         </h2>
       </div>
-      <div className="grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 gap-4 p-5">
-        {courses.map((course) => (
-          <CourseCard key={course.id} course={course} />
-        ))}
-      </div>
+      {(filteredCourses.length !== 0 && (
+        <div className="grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 gap-4 p-5">
+          {filteredCourses?.map((course) => (
+            <CourseCard key={course.id} course={course} />
+          ))}
+        </div>
+      )) || (
+        <div className="flex justify-center items-center h-[50vh]">
+          <h1 className="text-2xl text-gray-500">
+            No courses found for category "{activeCategory}"
+          </h1>
+        </div>
+      )}
     </div>
   );
 }
