@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import CategoriesData from "@/app/lib/Category";
 import CourseCard from "../cards/CourseCard";
 
-function Mainpage() {
+function Mainpage({ courses }) {
   const [activeCategory, setActiveCategory] = useState("All");
 
   const handleClick = (category) => {
@@ -53,19 +53,9 @@ function Mainpage() {
         </h2>
       </div>
       <div className="grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 gap-4 p-5">
-        <CourseCard />
-        <CourseCard />
-        <CourseCard />
-        <CourseCard />
-        <CourseCard />
-        <CourseCard />
-        <CourseCard />
-        <CourseCard />
-        <CourseCard />
-        <CourseCard />
-        <CourseCard />
-        <CourseCard />
-        <CourseCard />
+        {courses.map((course) => (
+          <CourseCard key={course.id} course={course} />
+        ))}
       </div>
     </div>
   );

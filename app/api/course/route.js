@@ -2,10 +2,8 @@ import Course from "@/app/lib/models/courseModel";
 import User from "@/app/lib/models/userModel";
 
 export async function GET(request, { params }) {
-  const { id } = params;
-
   try {
-    const course = await Course.findById(id)
+    const course = await Course.find()
       .populate("createdBy")
       .populate("students", "email");
     if (!course) {
