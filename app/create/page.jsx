@@ -17,6 +17,7 @@ function page() {
   const [today, setToday] = useState(new Date().toISOString().split("T")[0]);
   const [userInput, setUserInput] = useState([]);
   const [image, setImage] = useState(null);
+  const [uploading, setUploading] = useState(false);
   const [qrImage, setQrImage] = useState(null);
   function saveTags() {
     const catego = CaregoriesData.find((cat) => cat.title === category);
@@ -46,6 +47,81 @@ function page() {
       });
   }
 
+  function checkForm() {
+    if (
+      userInput.title === "" ||
+      userInput.shortDescription === "" ||
+      userInput.price === "" ||
+      userInput.meetLink === "" ||
+      userInput.startDate === "" ||
+      userInput.duration === "" ||
+      description === "" ||
+      category === "" ||
+      image === null ||
+      qrImage === null
+    ) {
+      return false;
+    }
+    return true;
+  }
+
+  async function uploadtoIbb(file) {
+    const formData = new FormData();
+    formData.append("image", file);
+    const res = await fetch(
+      "https://api.imgbb.com/1/upload?key=" + process.env.NEXT_PUBLIC_IMGBB,
+      {
+        method: "POST",
+        body: formData,
+      }
+    );
+    const data = await res.json();
+    return data.data.url;
+  }
+
+  async function createCourse() {
+    setUploading(true);
+    if (!checkForm()) {
+      alert("Please fill all the fields");
+      setUploading(false);
+      return;
+    }
+    const imageurl = await uploadtoIbb(image);
+    const qr = await uploadtoIbb(qrImage);
+
+    const payment = {
+      method: userInput.payment ? userInput.payment : "esewa",
+      qrcode: qr,
+    };
+    const courseData = {
+      ...userInput,
+      image: imageurl,
+      payment,
+
+      tags: initialTags,
+      category,
+      description,
+    };
+    fetch("/api/course/create", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ courseData }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.status === "success") {
+          alert(data.message);
+          router.push("/courses/" + data.link);
+          setUploading(false);
+        } else {
+          alert(data.message);
+          setUploading(false);
+        }
+      });
+  }
+
   useEffect(() => {
     getRole();
   }, []);
@@ -55,12 +131,16 @@ function page() {
   return (
     <section className="bg-white">
       <div className="lg:grid lg:min-h-screen lg:grid-cols-12">
-        <section className="relative flex h-32 items-end bg-gray-900 lg:col-span-5 lg:h-full xl:col-span-6">
-          <img
-            alt=""
-            src="https://images.unsplash.com/photo-1617195737496-bc30194e3a19?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80"
-            className="absolute inset-0 h-full w-full object-cover opacity-80"
-          />
+        <section
+          className="relative flex h-32 items-end bg-gray-900 lg:col-span-5 lg:h-full xl:col-span-6"
+          style={{
+            backgroundImage: `url("https://images.unsplash.com/photo-1617195737496-bc30194e3a19?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80")`,
+            backgroundPosition: "center",
+            backgroundSize: "cover",
+            backgroundRepeat: "no-repeat",
+            backgroundAttachment: "fixed",
+          }}
+        >
           <div className="hidden lg:relative lg:block lg:p-12">
             <a className="block text-white" href="#">
               <span className="sr-only">Home</span>
@@ -255,7 +335,6 @@ function page() {
                     setUserInput({ ...userInput, startDate: e.target.value })
                   }
                   type="date"
-                  pattern="\d{4}-\d{2}-\d{2}"
                   name="startDate"
                   id="startDate"
                   placeholder="When does your course start?"
@@ -440,8 +519,12 @@ function page() {
               )}
             </div>
             <div className="col-span-6 sm:flex sm:items-center sm:gap-4">
-              <button className="inline-block shrink-0 rounded-md border border-blue-600 bg-blue-600 px-12 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-blue-600 focus:outline-none focus:ring active:text-blue-500">
-                Create a Course
+              <button
+                onClick={createCourse}
+                disabled={uploading}
+                className="inline-block shrink-0 rounded-md border border-blue-600 bg-blue-600 px-12 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-blue-600 focus:outline-none focus:ring active:text-blue-500"
+              >
+                {uploading ? "Uploading..." : "Create Course"}
               </button>
             </div>
           </div>

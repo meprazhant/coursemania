@@ -1,6 +1,7 @@
 import { getServerSession } from "next-auth";
 import User from "@/app/lib/models/userModel";
 import { authOptions } from "../../auth/[...nextauth]/route";
+import Course from "@/app/lib/models/courseModel";
 
 export async function POST(request) {
   const res = await request.json();
@@ -29,23 +30,32 @@ export async function POST(request) {
     });
   }
   const { courseData } = res;
-  const newCourse = new Course({
-    title: courseData.title,
-    description: courseData.description,
-    price: courseData.price,
-    createdBy: user._id,
-    shortDescription: courseData.shortDescription,
-    image: courseData.image,
-    category: courseData.category,
-    tags: courseData.tags,
-    meetLink: courseData.meetLink,
-    startDate: courseData.startDate,
-    duration: courseData.duration,
-    payment: courseData.payment,
-  });
-  await newCourse.save();
-  return Response.json({
-    status: "success",
-    message: "Course created successfully",
-  });
+  try {
+    const newCourse = new Course({
+      title: courseData.title,
+      description: courseData.description,
+      price: courseData.price,
+      createdBy: user._id,
+      shortDescription: courseData.shortDescription,
+      image: courseData.image,
+      category: courseData.category,
+      tags: courseData.tags,
+      meetLink: courseData.meetLink,
+      startDate: courseData.startDate,
+      duration: courseData.duration,
+      payment: courseData.payment,
+    });
+    await newCourse.save();
+    return Response.json({
+      status: "success",
+      message: "Course created successfully",
+      link: newCourse._id,
+    });
+  } catch (error) {
+    return Response.json({
+      status: "error",
+      message: error.message,
+      courseData,
+    });
+  }
 }
