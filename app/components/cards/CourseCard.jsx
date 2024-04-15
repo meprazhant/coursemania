@@ -21,7 +21,7 @@ function CourseCard({ course }) {
         <img
           src={course.image}
           alt="course"
-          className="object-cover w-full h-32 rounded-md"
+          className="object-cover w-full h-52 rounded-md"
         />
       </div>
 
@@ -69,10 +69,12 @@ function CourseCard({ course }) {
       <div className="flex  gap-2 w-full justify-between">
         <div className="flex items-center gap-2">
           <div className="flex items-center gap-1">
-            <AiFillStar />
-            <AiFillStar />
-            <AiFillStar />
-            <AiOutlineStar />
+            {Array.from({ length: course?.createdBy?.rating }, (_, i) => (
+              <AiFillStar key={i} size={22} className="text-yellow-400" />
+            ))}
+            {Array.from({ length: 5 - course?.createdBy?.rating }, (_, i) => (
+              <AiOutlineStar key={i} size={22} className="text-yellow-400" />
+            ))}
           </div>
           <p className="text-sm">({course.createdBy?.rating}/5)</p>
         </div>

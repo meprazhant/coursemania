@@ -142,7 +142,7 @@ function SingleCOursePage({ course }) {
           <img
             src={courseData?.image}
             alt="course"
-            className="object-cover w-full rounded-md"
+            className="object-cover w-full max-h-[240px] rounded-md"
           />
           <div className="flex flex-col gap-3">
             <h1 className="text-xl font-bold">Course Starts In</h1>
