@@ -6,13 +6,20 @@ const fetchCourses = async () => {
     cache: "no-cache",
   });
   if (!res.ok) {
-    throw new Error("An error occurred while fetching the data" + res.status);
+    throw new Error("An error occurred while fetching the data " + res.status);
   }
   return res.json();
 };
 
 async function page() {
-  const courses = await fetchCourses();
+  let courses = "";
+  try {
+    courses = await fetchCourses();
+  } catch (error) {
+    console.error(error);
+    courses = { status: "error", message: error.message };
+  }
+
   if (courses.status === "error") {
     throw new Error(courses.message);
   }
