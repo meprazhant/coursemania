@@ -5,6 +5,7 @@ import ErEditCourse from "./ErEditCourse";
 import ErCourseInfo from "./ErCourseInfo";
 import ErMembers from "./ErMembers";
 import ErMeeting from "./ErMeeting";
+import ErNotice from "./ErNotice";
 
 function MainPage({ data }) {
   const [activeTab, setActiveTab] = React.useState("meeting");
@@ -24,6 +25,14 @@ function MainPage({ data }) {
           isTeacher={data?.isTeacher}
           setActive={setActiveTab}
           meetLink={data?.course?.meetLink}
+        />
+      )}
+      {activeTab === "notice" && (
+        <ErNotice
+          courseId={data?.course._id}
+          isTeacher={data?.isTeacher}
+          teacher={data?.user}
+          createdAt={data?.course?.createdAt}
         />
       )}
     </div>

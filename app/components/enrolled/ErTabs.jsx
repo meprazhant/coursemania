@@ -11,13 +11,13 @@ import {
 import { SiGooglemeet } from "react-icons/si";
 
 const activeClass =
-  "flex items-center flex-shrink-0 px-5 py-3 space-x-2 border-b border-b-black rounded-t-lg dark:border-gray-600 dark:text-gray-900 dark:bg-gray-200 dark:hover:bg-gray-700 dark:hover:text-gray-100 cursor-pointer";
+  "flex items-center flex-shrink-0 px-5 py-3 space-x-2  rounded-t-lg border-gray-600 text-gray-900 bg-white hover:bg-gray-700 hover:text-gray-100 cursor-pointer";
 const normalClass =
-  "flex items-center flex-shrink-0 px-5 py-3 space-x-2 dark:border-gray-600 dark:text-gray-600 hover:bg-gray-200 dark:hover:bg-gray-700 dark:hover:text-gray-100 rounded-t-lg cursor-pointer";
+  "flex items-center flex-shrink-0 px-5 py-3 space-x-2 border-gray-600 text-gray-600 hover:bg-gray-200 hover:bg-gray-700 hover:text-gray-100 rounded-t-lg cursor-pointer";
 
 function ErTabs({ setActiveTab, activeTab, teacher }) {
   return (
-    <div className="flex items-center border-b overflow-x-auto overflow-y-hidden  flex-nowrap dark:bg-gray-100 dark:text-gray-800 w-full">
+    <div className="flex items-center border-b overflow-x-auto overflow-y-hidden  flex-nowrap bg-gray-100 text-gray-800 w-full">
       <div
         onClick={() => {
           setActiveTab("meeting");
