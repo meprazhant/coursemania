@@ -24,6 +24,13 @@ function page() {
     setInitialTags(catego?.tags);
   }
 
+  function clickCover() {
+    document.getElementById("coverImage").click();
+  }
+  function clickQr() {
+    document.getElementById("paymentQr").click();
+  }
+
   useEffect(() => {
     saveTags();
   }, [category]);
@@ -388,7 +395,7 @@ function page() {
               {!image && (
                 <div
                   onClick={() => {
-                    document.getElementById("coverImage").click();
+                    clickCover();
                   }}
                   className="flex justify-center mt-3 hover:bg-gray-200 duration-200 cursor-pointer items-center border border-dashed rounded-md h-52 w-full border-black"
                 >
@@ -466,7 +473,7 @@ function page() {
               {!qrImage && (
                 <div
                   onClick={() => {
-                    document.getElementById("paymentQr").click();
+                    clickQr();
                   }}
                   className="flex justify-center mt-3 hover:bg-gray-200 duration-200 cursor-pointer items-center border border-dashed rounded-md h-52 w-full border-black"
                 >
