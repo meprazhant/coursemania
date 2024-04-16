@@ -25,10 +25,15 @@ function page() {
   }
 
   function clickCover() {
-    document.getElementById("coverImage").click();
+    if (!!document) {
+      document.getElementById("coverImage").click();
+    } else {
+      retrun;
+    }
   }
   function clickQr() {
-    document.getElementById("paymentQr").click();
+    if (!!document) document.getElementById("paymentQr").click();
+    else return;
   }
 
   useEffect(() => {
