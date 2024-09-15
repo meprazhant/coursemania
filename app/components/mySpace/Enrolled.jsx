@@ -35,7 +35,7 @@ function Enrolled({ enrolled, enrollLoading }) {
             className="h-52"
           />
           <h1 className="text-3xl ">
-            You have not enrolled in any course yet.
+            You have not enrolled in any course yet. Please Enroll some
           </h1>
           <p className="text-md text-gray-500">
             There are a lot of courses available for you. Check out our courses.
