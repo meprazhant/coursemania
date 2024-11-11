@@ -63,7 +63,7 @@ function Navbar({ user }) {
             pathname === "/teach" ? "text-blue-900" : ""
           } `}
         >
-          Teach on Hamro Classroom
+          Teach on GyanSagar
         </Link>
       </div>
       <div className="flex items-center">
@@ -79,7 +79,7 @@ function Navbar({ user }) {
         {(!auth && (
           <Link
             href="/login"
-            className=" bg-black p-2 rounded-md text-white px-5 hover:bg-transparent border-2 hover:border-black transition duration-300 ease-in-out hover:text-black"
+            className=" bg-red-500 p-2 rounded-md text-white px-5 hover:bg-transparent border-2 hover:border-black transition duration-300 ease-in-out hover:text-black"
           >
             Get Started
           </Link>

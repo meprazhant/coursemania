@@ -43,7 +43,7 @@ function Footer() {
       </div>
       <div className="flex items-center justify-center px-6 pt-12 text-sm">
         <span className="dark:text-gray-600">
-          © Copyright 2024 | Hamro Classroom . All Rights Reserved.
+          © Copyright 2024 | GyanSagar . All Rights Reserved.
         </span>
       </div>
     </footer>
